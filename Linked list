@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+ struct node{
+  int data;
+  struct node *link;
+};
+struct node *create(struct node *,int);
+void display(struct node *);
+struct node *delete(struct node *,int);
+struct node *sort(struct node*);
+int main(void) {
+  int ch,dat,n;
+  struct node *root=NULL;
+  do{
+  printf("\n1.Enter node\n");
+  printf("2.Delete Node\n");
+  printf("3.Sort list\n");
+  printf("4.Display\n");
+  scanf("%d",&ch);
+  switch(ch)
+  {
+    case 1:{
+      printf("Enter no of nodes - ");
+      scanf("%d",&n);
+      
+      root=create(root,n);
+      break;
+    }
+    case 2:{
+      int v;
+      printf("Enter value of node to be deleted - ");
+      scanf("%d",&v);
+
+      root=delete(root,v);
+      break;
+    }
+    case 3:{
+      root=sort(root);
+    }
+    case 4:{
+      display(root);
+    }
+  }
+
+  }while(ch!=0);
+  return 0;
+}
+struct node *create(struct node *root,int n)
+{
+  int i,dat;
+  struct node *temp=NULL;
+  struct node *t=NULL;
+  for(i=0;i<n;i++)
+  {
+    temp=(struct node *)malloc(sizeof(struct node));
+    t=(struct node *)malloc(sizeof(struct node));
+    printf("\nEnter data - ");
+    scanf("%d",&dat);
+    temp->data=dat;
+    temp->link=NULL;
+    if(root==NULL)
+    {
+      root=(struct node *)malloc(sizeof(struct node));
+      root=temp;
+    }
+    else
+    {
+      t=root;
+      while(t->link!=NULL)
+      {
+        t=t->link;
+      }
+      t->link=temp;
+    }
+  }
+  return root;
+  
+  
+}
+void display(struct node *root)
+{
+  //h1=(struct node *)malloc(sizeof(struct node));
+  struct node *t=NULL;
+  t=(struct node *)malloc(sizeof(struct node));
+  if(root==NULL)
+  {
+    printf("Empty list");
+  }
+  
+  else{
+    t=root;
+    while(t!=NULL)
+    {
+      printf("%d",t->data);
+      t=t->link;
+    }
+  }
+  
+}
+struct node *delete(struct node *root,int v)
+{
+  struct node *temp=NULL;
+  struct node *t=NULL;
+  struct node *pre;
+   t=root;
+    pre=t;
+  if(root==NULL)
+  {
+    printf("Empty");
+  }
+  else if(t->data==v)
+  {
+    root=root->link;
+    return root;
+  }
+  else{
+    t=root;
+    pre=t;
+    while(t->data!=v)
+    {
+        pre=t;
+        t=t->link;
+    }
+    pre->link=t->link;
+    free(t);
+    return root;
+  }
+}
+struct node *sort(struct node *root)
+{
+  int temp=0;
+  struct node *t1=NULL;
+  struct node *t2=NULL;
+  t1=root;
+  while(t1->link!=NULL)
+  {
+    t2=t1->link;
+    while(t2->link!=NULL)
+    {
+      if(t1->data>t1->data)
+      {
+        temp=t1->data;
+        t1->data=t2->data;
+        t2->data=temp;
+      }
+      t2=t2->link;
+    }
+    t1=t1->link;
+  }
+  return root;
+}
